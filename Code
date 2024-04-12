@@ -1,0 +1,50 @@
+from tkinter import *
+from tkinter import filedialog
+from PIL import Image
+
+def encrypt_image():
+    global original_image
+    filename = filedialog.askopenfilename()
+    original_image = Image.open(filename)
+    encrypted_image = original_image.copy()
+
+    # Example encryption: invert pixel values
+    width, height = encrypted_image.size
+    for x in range(width):
+        for y in range(height):
+            r, g, b = encrypted_image.getpixel((x, y))
+            encrypted_image.putpixel((x, y), (255 - r, 255 - g, 255 - b))
+
+    encrypted_image.show()
+
+def decrypt_image():
+    global original_image
+    if original_image is not None:
+        decrypted_image = original_image.copy()
+
+        # Example decryption: same as encryption for demonstration
+        width, height = decrypted_image.size
+        for x in range(width):
+            for y in range(height):
+                r, g, b = decrypted_image.getpixel((x, y))
+                decrypted_image.putpixel((x, y), (255 - r, 255 - g, 255 - b))
+
+        decrypted_image.show()
+    else:
+        print("No image to decrypt. Please encrypt an image first.")
+
+# Initialize Tkinter
+root = Tk()
+root.title("Image Encryption Tool")
+
+# Create buttons
+encrypt_button = Button(root, text="Encrypt Image", command=encrypt_image, bg="blue", fg="white")
+encrypt_button.pack(pady=10)
+decrypt_button = Button(root, text="Decrypt Image", command=decrypt_image, bg="green", fg="white")
+decrypt_button.pack(pady=10)
+
+# Global variable to store original image
+original_image = None
+
+# Run Tkinter event loop
+root.mainloop()
